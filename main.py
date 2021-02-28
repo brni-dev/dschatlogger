@@ -3,7 +3,7 @@ from colorama import init, Fore, Style, ansi, AnsiToWin32
 colorama.init(convert=True)
 
 TOKEN = "YourTokenHere"
-p = True # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
+p = False # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
 p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)
 
 # Insert a channel/server/groupchat/DM ID to blacklist them! (Optional)

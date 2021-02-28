@@ -3,8 +3,10 @@ from colorama import init, Fore, Style, ansi, AnsiToWin32
 colorama.init(convert=True)
 
 TOKEN = "YourTokenHere"
+p = True # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
+p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)
 
-# Insert a channel/server/groupchat/DM ID to blacklist them!
+# Insert a channel/server/groupchat/DM ID to blacklist them! (Optional)
 server_blacklist = ()
 channel_blacklist = ()
 groupchat_blacklist = ()
@@ -66,9 +68,10 @@ def main():
 
             if message.channel.id not in channel_blacklist or message.author.id not in dm_blacklist:
                 if isinstance(message.channel, discord.channel.DMChannel):
-                    if message.author.id != self.user.id and message.channel.id not in sent and message.author not in self.user.friends:
-                        sent.append(message.channel.id)
-                        await message.channel.send("(automatically sent message) i might take a while to respond so yeah")
+                    if p == True:
+                        if message.author.id != self.user.id and message.channel.id not in sent and message.author not in self.user.friends:
+                            sent.append(message.channel.id)
+                            await message.channel.send(p_reply)
                     if a == self.user.id:
                         a = "You"
                     else:

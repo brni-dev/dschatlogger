@@ -101,7 +101,7 @@ def main():
         Client().run(TOKEN, bot=False)
     except Exception as e:
         ansi.clear_screen()
-        exit(f"{appred}Error! {e}")
+        exit(f"{c_reset}{appred}Error! {e}")
 
 if __name__ == '__main__':
     main()

@@ -2,7 +2,7 @@ import discord, colorama, os
 from colorama import init, Fore, Style, ansi, AnsiToWin32
 colorama.init(convert=True)
 
-TOKEN = "Mzc0OTY0NzA4MTY1Mjg3OTQw.YCjJiw.RGD_ngclt6p7LP_iBlL9K-rcL50"
+TOKEN = "YourTokenHere"
 
 # Insert a channel/server/groupchat/DM ID to blacklist them!
 server_blacklist = (

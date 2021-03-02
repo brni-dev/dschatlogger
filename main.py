@@ -5,7 +5,7 @@ colorama.init(convert=True)
 load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
-displayimages = False # Set to True if you want to show images (the images will be stored in the assets folder)
+displayimages = False # Set to True if you want to show images (the images will be stored in the assets folder) (Optional)
 savechatlog = False # Set to True if you want to save the Chat Log in a text file (Optional)
 p = False # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
 p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)

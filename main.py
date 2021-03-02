@@ -3,6 +3,7 @@ from colorama import init, Fore, Style, ansi, AnsiToWin32
 colorama.init(convert=True)
 
 TOKEN = "YourTokenHere"
+savechatlog = False # Set to True if you want to save the Chat Log in a text file (Optional)
 p = False # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
 p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)
 
@@ -41,6 +42,9 @@ def make_unicode(input):
 def main():
     ansi.clear_screen()
 
+    if savechatlog == True:
+        log = open("chatlog.txt", "w+")
+        log.write("-- DISCORD CHAT LOG --\n\n")
     sent = []
     appgreen = f"{c_reset}[{c_lightgreen}APP{c_reset}] "
     appred = f"[{c_reset}{c_lightred}APP{c_reset}] "
@@ -55,17 +59,6 @@ def main():
                     return f"{c_lightmagenta}PINGED{c_reset}, "
                 else:
                     return ""
-            #def returnuserid():
-            #    if "<@!" in message.content:
-            #        a = message.content.partition("<@!")
-            #        userid = ""
-            #        b = 0
-            #        for i in a:
-            #            if b == 18:
-            #                return userid
-            #            b += 1
-            #            userid += i
-
             if message.channel.id not in channel_blacklist or message.author.id not in dm_blacklist:
                 if isinstance(message.channel, discord.channel.DMChannel):
                     if p == True:
@@ -79,6 +72,10 @@ def main():
                     if b == "":
                         b = f"{c_lightblack}User sent a file/started a call/pinned a message{c_reset}"
                     print(appgreen + f"({checkifpinged()}{c_yellow}DM{c_reset}) {c_lightred}{a}{c_reset}: {c_red}{b}{c_reset}")
+                    if log == True:
+                        try:
+                            log.writelines(f"({checkifpinged()}DM) {a}: {b}\n")
+                        except: pass
                 else:
                     try:
                         if message.guild.id not in server_blacklist:
@@ -88,8 +85,11 @@ def main():
                                 a = message.author
                             if b == "":
                                 b = f"{c_lightblack}User sent a file/pinned a message{c_reset}"
-                            #messag = message.content.replace("<@!" + returnuserid() + ">", "@" + await Client.fetch_user(returnuserid()).name)
                             print(appgreen + f'({checkifpinged()}{c_lightcyan}{message.guild.name}{c_reset}, {c_lightcyan}#{message.channel}{c_reset}) {c_green}{a}{c_reset}: {c_blue}{b}')
+                            if savechatlog == True:
+                                try:
+                                    log.writelines(f"({checkifpinged()}{message.guild.name}, #{message.channel}) {a}: {b}\n")
+                                except: pass
                     except:
                         if message.channel.id not in groupchat_blacklist:
                             if a == self.user.id:
@@ -99,6 +99,10 @@ def main():
                             if b == "":
                                 b = f"{c_lightblack}User sent a file/pinned a message{c_reset}"
                             print(appgreen + f"({checkifpinged()}{c_yellow}GROUP-CHAT{c_reset}) {c_lightred}{a}{c_reset}: {c_red}{b}{c_reset}")
+                            if savechatlog == True:
+                                try:
+                                    log.writelines(f"({checkifpinged()}GROUP-CHAT) {a}: {b}\n")
+                                except: pass
   
     try:
         Client().run(TOKEN, bot=False)

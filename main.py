@@ -5,26 +5,13 @@ colorama.init(convert=True)
 load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
-displayimages = True # Set to True if you want to show images (the images will be stored in the assets folder)
+displayimages = False # Set to True if you want to show images (the images will be stored in the assets folder)
 savechatlog = False # Set to True if you want to save the Chat Log in a text file (Optional)
 p = False # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
 p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)
 
 # Insert a channel/server/groupchat/DM ID to blacklist them! (Optional)
-server_blacklist = (
-    772246175340167248, 
-    737556041927098408,
-    763391371444355133,
-    755572873166455006,
-    709421463127589024,
-    174075418410876928,
-    348973006581923840,
-    501090983539245061,
-    472308444372795393,
-    632892259553247232,
-    336642139381301249,
-    81384788765712384,
-)
+server_blacklist = ()
 channel_blacklist = ()
 groupchat_blacklist = ()
 dm_blacklist = ()

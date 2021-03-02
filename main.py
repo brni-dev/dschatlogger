@@ -1,14 +1,30 @@
-import discord, colorama, os
+import discord, colorama, os, requests, shutil, timg
+from dotenv import load_dotenv
 from colorama import init, Fore, Style, ansi, AnsiToWin32
 colorama.init(convert=True)
+load_dotenv()
 
-TOKEN = "YourTokenHere"
+TOKEN = os.getenv('TOKEN')
+displayimages = True # Set to True if you want to show images (the images will be stored in the assets folder)
 savechatlog = False # Set to True if you want to save the Chat Log in a text file (Optional)
 p = False # Set to True if you want to send an automatic reply message everytime a non-friended user DM's you (Optional)
 p_reply = "(automatically sent message) i might take a while to respond so yeah" # Custom automatic reply message (Optional)
 
 # Insert a channel/server/groupchat/DM ID to blacklist them! (Optional)
-server_blacklist = ()
+server_blacklist = (
+    772246175340167248, 
+    737556041927098408,
+    763391371444355133,
+    755572873166455006,
+    709421463127589024,
+    174075418410876928,
+    348973006581923840,
+    501090983539245061,
+    472308444372795393,
+    632892259553247232,
+    336642139381301249,
+    81384788765712384,
+)
 channel_blacklist = ()
 groupchat_blacklist = ()
 dm_blacklist = ()
@@ -35,12 +51,35 @@ c_lightwhite = Fore.LIGHTWHITE_EX
 c_lightblack = Fore.LIGHTBLACK_EX
 
 def make_unicode(input):
+    """
+    Makes it unicode, duh
+    """
     if type(input) != unicode:
         input =  input.decode('utf-8')
     return input
 
+def makeassetsfolder():
+    fassets = "assets"
+    cwd = os.getcwd()
+    new = os.path.join(cwd, fassets)
+    if os.path.exists(new): 
+        shutil.rmtree(fassets)
+        os.mkdir(new)
+    else: os.mkdir(new)
+    os.chdir(new)
+
+def displayimage():
+    obj = timg.Renderer()
+    imgname = os.getenv('IMG-NAME')                                                                                      
+    try: obj.load_image_from_file(f"{imgname}")
+    except: pass
+    obj.resize(100,40)
+    print(c_reset)
+    obj.render(timg.ASCIIMethod)
+
 def main():
     ansi.clear_screen()
+    makeassetsfolder()
 
     if savechatlog == True:
         log = open("chatlog.txt", "w+")
@@ -54,6 +93,15 @@ def main():
         async def on_message(self, message):
             a = message.author.id
             b = message.content
+            def getimage():
+                for i in message.content.split(" "):
+                    if i.startswith("https://"):
+                        file = requests.get(i).content
+                        f = open(i.split("/")[-1], 'wb')
+                        f.write(file)
+                        os.environ['IMG-NAME'] = f.name
+                        f.close()
+                else: return
             def checkifpinged():
                 if f"<@!{self.user.id}>" in message.content:
                     return f"{c_lightmagenta}PINGED{c_reset}, "
@@ -71,6 +119,10 @@ def main():
                         a = message.author
                     if b == "":
                         b = f"{c_lightblack}User sent a file/started a call/pinned a message{c_reset}"
+                    if displayimages == True:
+                        if "https://cdn.discordapp.com/" in message.content:
+                                getimage()
+                                displayimage()
                     print(appgreen + f"({checkifpinged()}{c_yellow}DM{c_reset}) {c_lightred}{a}{c_reset}: {c_red}{b}{c_reset}")
                     if savechatlog == True:
                         try:
@@ -85,6 +137,10 @@ def main():
                                 a = message.author
                             if b == "":
                                 b = f"{c_lightblack}User sent a file/pinned a message{c_reset}"
+                            if displayimages == True:
+                                if "https://cdn.discordapp.com/" in message.content:
+                                    getimage()
+                                    displayimage()
                             print(appgreen + f'({checkifpinged()}{c_lightcyan}{message.guild.name}{c_reset}, {c_lightcyan}#{message.channel}{c_reset}) {c_green}{a}{c_reset}: {c_blue}{b}')
                             if savechatlog == True:
                                 try:
@@ -98,6 +154,10 @@ def main():
                                 a = message.author
                             if b == "":
                                 b = f"{c_lightblack}User sent a file/pinned a message{c_reset}"
+                            if displayimages == True:
+                                if "https://cdn.discordapp.com/" in message.content:
+                                    getimage()
+                                    displayimage()
                             print(appgreen + f"({checkifpinged()}{c_yellow}GROUP-CHAT{c_reset}) {c_lightred}{a}{c_reset}: {c_red}{b}{c_reset}")
                             if savechatlog == True:
                                 try:

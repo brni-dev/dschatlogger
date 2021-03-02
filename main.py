@@ -72,7 +72,7 @@ def main():
                     if b == "":
                         b = f"{c_lightblack}User sent a file/started a call/pinned a message{c_reset}"
                     print(appgreen + f"({checkifpinged()}{c_yellow}DM{c_reset}) {c_lightred}{a}{c_reset}: {c_red}{b}{c_reset}")
-                    if log == True:
+                    if savechatlog == True:
                         try:
                             log.writelines(f"({checkifpinged()}DM) {a}: {b}\n")
                         except: pass
